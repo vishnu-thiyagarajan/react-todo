@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
-import './Task.css'
+import './FilterTask.css'
 import { Button } from './Button'
-export function Task (props) {
+export function FilterTask (props) {
   const [openTask, setOpenTask] = useState(false)
   const openEditTask = (event) => setOpenTask(!openTask)
   return (
     <div>
-      <div id={props.obj.id} className='task' onClick={openEditTask} >
+      <div id={props.obj.id + '|' + props.obj.listid} className='filtertask' onClick={openEditTask} >
         <input type='checkbox' checked={props.obj.done} onChange={props.taskDone} onClick={event => event.stopPropagation()} />
         <p>{props.obj.taskname}</p>
+        <p>{props.obj.duedate}</p>
+        <p>{props.obj.listname}</p>
       </div>
       {openTask &&
-        <div id={props.obj.id} className='grid-container'>
+        <div id={props.obj.id + '|' + props.obj.listid} className='grid-container'>
           <div className='notes'>
             Notes:
             <br />
