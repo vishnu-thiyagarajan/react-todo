@@ -16,7 +16,7 @@ class App extends React.Component {
   saveTask = (event) => {
     let temp = this.state.lists
     let key = this.state.key
-    var taskid = event.target.parentNode.parentNode.id
+    var taskid = event.target.id || event.target.parentNode.parentNode.id
     if (!this.state.currentlistid) {
       var [taskid,listid] = taskid.split('|')
       key = temp.findIndex(item => item.id == listid)
@@ -24,7 +24,8 @@ class App extends React.Component {
     let tkey = temp[key].tasks.findIndex(item => item.id == taskid)
     if (event.target.tagName === 'TEXTAREA') temp[key].tasks[tkey].notes = event.target.value
     if (event.target.tagName === 'SELECT') temp[key].tasks[tkey].priority = event.target.value
-    if (event.target.tagName === 'INPUT') temp[key].tasks[tkey].duedate = event.target.value
+    if (event.target.tagName === 'INPUT' && event.target.type === 'text') temp[key].tasks[tkey].taskname = event.target.value
+    if (event.target.tagName === 'INPUT' && event.target.type === 'date') temp[key].tasks[tkey].duedate = event.target.value
     this.setState({lists: temp})
   }
   taskDone = (event) => {
@@ -175,13 +176,6 @@ class App extends React.Component {
       if (section === 'Today') filterTasks = filterTasks.filter(item=>item.duedate === today)
       if (section === 'Scheduled') filterTasks = filterTasks.filter(item=>item.duedate !== '')
     }
-    // for (let list of this.state.lists){
-    //   let tasklist = []
-    //   for (let task of list){
-    //     tasklist.push(task.taskname)
-    //   }
-    //    tasklist
-    // }
     return (
       <div> 
         {!currentlistid && section === 'Lists' &&

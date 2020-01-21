@@ -3,12 +3,15 @@ import './Task.css'
 import { Button } from './Button'
 export function Task (props) {
   const [openTask, setOpenTask] = useState(false)
+  const [inputTask, setInputTask] = useState(false)
   const openEditTask = (event) => setOpenTask(!openTask)
+  const toggleName = (event) => setInputTask(!inputTask)
   return (
     <div>
-      <div id={props.obj.id} className='task' onClick={openEditTask} >
+      <div id={props.obj.id} className='task' onClick={openEditTask}>
         <input type='checkbox' checked={props.obj.done} onChange={props.taskDone} onClick={event => event.stopPropagation()} />
-        <p>{props.obj.taskname}</p>
+        {!inputTask && <p onClick={toggleName}>{props.obj.taskname}</p>}
+        {inputTask && <input autoFocus type='text' onChange={props.saveTask} onClick={toggleName} value={props.obj.taskname} />}
       </div>
       {openTask &&
         <div id={props.obj.id} className='grid-container'>

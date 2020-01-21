@@ -1,11 +1,12 @@
 import React from 'react'
 import './List.css'
 export function List (props) {
+  console.log(props.tasklist)
   return (
     <div className='innercontainer'>
       <div onDoubleClick={props.openList} onClick={props.toggleSelect} className={`item ${props.item.selected ? 'selected' : ''}`} id={props.item.id}>
         <div onDoubleClick={props.openList} onClick={props.toggleSelect} className='overflow' id={props.item.id}>
-          <p onDoubleClick={props.openList} onClick={props.toggleSelect} id={props.item.id}>{props.tasklist}</p>
+          <p onDoubleClick={props.openList} onClick={props.toggleSelect} id={props.item.id}>{props.tasklist ? props.tasklist : 'no tasks'}</p>
         </div>
       </div>
       {!props.item.text && <p id={props.item.id} onClick={props.toggleText}>{props.item.listname}</p>}
