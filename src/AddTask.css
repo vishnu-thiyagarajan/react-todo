@@ -1,0 +1,12 @@
+#addtask{
+    margin-left: 50px;
+    margin-right: 50px;
+    display: grid;
+}
+
+#addtask>input[type="text"] {
+    height: 25px;
+    font-size: 20px;
+    border: 3px solid black;
+    outline: none;
+  }

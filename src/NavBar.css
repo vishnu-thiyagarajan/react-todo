@@ -1,0 +1,36 @@
+#navbar {
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 6fr 1fr;
+    grid-gap: 5px;
+    top: 0;
+    width: 98.75%;
+    position: fixed;
+  }
+#buttongroup {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-self: center;
+    grid-gap: 1px;
+  }
+#navbar>p{
+  display: grid;
+  grid-template-columns: 1fr;
+  font-weight: bold;
+  font-size: large;
+}
+#inputbar {
+    z-index: 1;
+    display: grid;
+    justify-items: center;
+    grid-template-columns: 1fr;
+    width: 100%;
+    padding-top: 10px;
+    position: fixed;
+    margin-top: 30px;
+  }
+#inputbar>input {
+    border: 3px solid #494949 ;
+    width: 50%;
+    outline: none;
+  }

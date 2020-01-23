@@ -1,0 +1,8 @@
+#delbar {
+    bottom:0;
+    display: grid;
+    grid-template-columns: 8fr;
+    grid-gap: 5px;
+    width: 98.75%;
+    position: fixed;
+  }
