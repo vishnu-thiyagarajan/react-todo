@@ -10,8 +10,9 @@ export function Task (props) {
     event.stopPropagation()
     const temp = props.lists
     const key = props.index
-    const taskid = event.target.id || event.target.parentNode.id
+    const taskid = event.target.id || event.target.parentNode.id || event.target.parentNode.parentNode.id
     const tkey = temp[key].tasks.findIndex(item => item.id === Number(taskid))
+    temp[key].tasks[tkey].listid = props.listid
     if (event.target.tagName === 'TEXTAREA') temp[key].tasks[tkey].notes = event.target.value
     if (event.target.tagName === 'SELECT') temp[key].tasks[tkey].priority = event.target.value
     if (event.target.tagName === 'INPUT' && event.target.type === 'text') temp[key].tasks[tkey].taskname = event.target.value
@@ -22,6 +23,9 @@ export function Task (props) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(temp[key].tasks[tkey])
     }).then(() => { props.handler({ lists: temp }) })
+      .catch(function (err) {
+        console.log('Fetch Error :', err)
+      })
   }
   const deleteTask = (event) => {
     const id = event.target.id || event.target.parentNode.id
@@ -32,17 +36,20 @@ export function Task (props) {
       if (item.id === Number(id)) objToBeDeleted = item
       return item.id !== Number(id)
     })
+    objToBeDeleted.listid = temp[key].id
     props.handler({ lists: temp })
     window.fetch('http://localhost:5000/task', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(objToBeDeleted)
+    }).catch(function (err) {
+      console.log('Fetch Error :', err)
     })
   }
   return (
     <div>
-      <div id={props.obj.id} className='task' onClick={openEditTask}>
-        <input type='checkbox' checked={props.obj.done} onChange={saveTask} />
+      <div className='task' onClick={openEditTask}>
+        <input id={props.obj.id} type='checkbox' checked={props.obj.done} onChange={saveTask} />
         {!inputTask && <p onClick={toggleName}>{props.obj.taskname}</p>}
         {inputTask && <input autoFocus type='text' onChange={saveTask} onClick={toggleName} value={props.obj.taskname} />}
       </div>

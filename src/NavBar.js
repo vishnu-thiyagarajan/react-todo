@@ -31,6 +31,8 @@ export function NavBar (props) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
+      }).catch(function (err) {
+        console.log('Fetch Error :', err)
       })
       event.target.value = ''
     }
@@ -50,19 +52,42 @@ export function NavBar (props) {
       section: 'Lists'
     })
   }
+  const deleteTask = (objToBeDeleted) => {
+    window.fetch('http://localhost:5000/task', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(objToBeDeleted)
+    }).catch(function (err) {
+      console.log('Fetch Error :', err)
+    })
+  }
   const clearDone = (event) => {
     const temp = props.lists
     const key = props.index
-    temp[key].tasks = temp[key].tasks.filter(item => !item.done)
+    if (!isNaN(Number(key))) {
+      temp[key].tasks = temp[key].tasks.filter(item => {
+        item.listid = temp[key].id
+        if (item.done) deleteTask(item)
+        return !item.done
+      })
+    }
     if (section === 'Today') {
       const today = new Date().toISOString().slice(0, 10)
       for (const key in temp) {
-        temp[key].tasks = temp[key].tasks.filter(item => !item.done && item.duedate === today)
+        temp[key].tasks = temp[key].tasks.filter(item => {
+          item.listid = temp[key].id
+          if (item.done && item.duedate === today) deleteTask(item)
+          return !item.done && item.duedate === today
+        })
       }
     }
     if (section === 'Scheduled') {
       for (const key in temp) {
-        temp[key].tasks = temp[key].tasks.filter(item => !item.done && item.duedate !== '')
+        temp[key].tasks = temp[key].tasks.filter(item => {
+          item.listid = temp[key].id
+          if (item.done && item.duedate !== '') deleteTask(item)
+          return !item.done && item.duedate !== ''
+        })
       }
     }
     props.handler({ lists: temp })

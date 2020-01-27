@@ -23,6 +23,8 @@ export function List (props) {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: listid, listname: name })
+      }).catch(function (err) {
+        console.log('Fetch Error :', err)
       })
     }
   }

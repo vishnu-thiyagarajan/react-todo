@@ -11,6 +11,8 @@ export function DeleteList (props) {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: item.id })
+          }).catch(function (err) {
+            console.log('Fetch Error :', err)
           })
         }
         return !item.selected

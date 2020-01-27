@@ -12,19 +12,22 @@ export function App (props) {
     section: 'Lists',
     lists: []
   })
+  const fetchData = () => {
+    window.fetch('http://localhost:5000/list')
+      .then(response => response.json()).then(data => {
+        data.forEach(element => {
+          element.display = true
+          element.tasks.map(item => ({ ...item, listid: element.id }))
+        })
+        setTodoObj({ ...todoObj, lists: data })
+      })
+      .catch(function (err) {
+        console.log('Fetch Error :', err)
+      })
+  }
   useEffect(() => {
-    const fetchData = () => {
-      return window.fetch('http://localhost:5000/list')
-        .then(response => response.json()).then(data => {
-          data.forEach(element => { element.display = true })
-          setTodoObj({ ...todoObj, lists: data })
-          console.log(todoObj)
-        })
-        .catch(function (err) {
-          console.log('Fetch Error :', err)
-        })
-    }
     fetchData()
+    // eslint-disable-next-line
   }, [])
   const handler = (obj) => setTodoObj({ ...todoObj, ...obj })
   const section = todoObj.section
@@ -37,11 +40,17 @@ export function App (props) {
   let filterTasks = []
   if (section !== 'Lists') {
     for (const eachList of list) {
-      filterTasks.push(...eachList.tasks)
+      filterTasks.push(...eachList.tasks.map(item => ({
+        ...item,
+        listname: eachList.listname,
+        listid: eachList.id
+      })))
     }
+
     const today = new Date().toISOString().slice(0, 10)
     if (section === 'Today') filterTasks = filterTasks.filter(item => item.duedate === today)
     if (section === 'Scheduled') filterTasks = filterTasks.filter(item => item.duedate !== '')
+    console.log(filterTasks)
   }
   return (
     <div>
@@ -78,7 +87,7 @@ export function App (props) {
             }).map((_item, _id) => {
               return (
                 <Task
-                  obj={_item} key={_id}
+                  obj={_item} key={_id} listid={currentlistid}
                   lists={list} index={index} handler={handler}
                 />
               )
