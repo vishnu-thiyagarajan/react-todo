@@ -20,13 +20,17 @@ export function NavBar (props) {
   }
   const addNewList = (event) => {
     if (event.key === 'Enter' && event.target.value) {
-      props.handler({
-        lists: [...props.lists, {
-          id: props.lists.length ? parseInt(props.lists[props.lists.length - 1].id) + 1 : 0,
-          listname: event.target.value,
-          display: true,
-          tasks: []
-        }]
+      const data = {
+        id: props.lists.length ? parseInt(props.lists[props.lists.length - 1].id) + 1 : 0,
+        listname: event.target.value,
+        display: true,
+        tasks: []
+      }
+      props.handler({ lists: [...props.lists, data] })
+      window.fetch('http://localhost:5000/list', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
       })
       event.target.value = ''
     }

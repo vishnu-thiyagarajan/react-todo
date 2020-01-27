@@ -12,11 +12,18 @@ export function List (props) {
     })
   }
   const setListName = (event) => {
-    if (event.target.value) {
+    const name = event.target.value
+    if (name) {
+      const listid = event.target.id
       const temp = props.lists
-      const key = temp.findIndex(item => item.id === Number(event.target.id))
+      const key = temp.findIndex(item => item.id === Number(listid))
       temp[key].listname = event.target.value
       props.handler({ lists: temp })
+      window.fetch('http://localhost:5000/list', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: listid, listname: name })
+      })
     }
   }
   const toggleText = (event) => {
@@ -35,9 +42,10 @@ export function List (props) {
   }
   return (
     <div className='innercontainer'>
-      <div onDoubleClick={openList} className={`item ${props.item.selected ? 'selected' : ''}`} id={props.item.id}>
-        <div onDoubleClick={openList} onClick={toggleSelect} className='overflow' id={props.item.id}>
-          <p onDoubleClick={openList} id={props.item.id}>{props.tasklist ? props.tasklist : 'no tasks'}</p>
+      <div onDoubleClick={openList} onClick={toggleSelect} className={`item ${props.item.selected ? 'selected' : ''}`} id={props.item.id}>
+        <div onDoubleClick={openList} onClick={toggleSelect} id={props.item.id}>
+          {props.tasklist && props.tasklist.map((i, k) => <label onClick={toggleSelect} id={props.item.id} key={k} onDoubleClick={openList}>{i}<br /></label>)}
+          {!props.tasklist.length && <p onClick={toggleSelect}>no tasks</p>}
         </div>
       </div>
       {!props.item.text && <p id={props.item.id} onClick={toggleText}>{props.item.listname}</p>}

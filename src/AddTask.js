@@ -8,7 +8,7 @@ export function AddTask (props) {
     if (event.key === 'Enter' && event.target.value) {
       const temp = props.lists
       const key = props.index
-      temp[key].tasks = [...temp[key].tasks, {
+      const data = {
         id: temp[key].tasks.length ? parseInt(temp[key].tasks[temp[key].tasks.length - 1].id) + 1 : 0,
         taskname: event.target.value,
         listname: list,
@@ -17,8 +17,17 @@ export function AddTask (props) {
         priority: 0,
         duedate: '',
         done: false
-      }]
-      props.handler({ lists: temp })
+      }
+      window.fetch('http://localhost:5000/task', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(response => response.json())
+        .then(result => {
+          data._id = result.id
+          temp[key].tasks = [...temp[key].tasks, data]
+          props.handler({ lists: temp })
+        })
       event.target.value = ''
     }
   }
