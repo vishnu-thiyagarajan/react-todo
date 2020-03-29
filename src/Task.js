@@ -3,6 +3,7 @@ import './Task.css'
 import { Button } from './Button'
 export function Task (props) {
   const [openTask, setOpenTask] = useState(false)
+  const [notes, setNotes] = useState(props.obj.notes)
   const [inputTask, setInputTask] = useState(false)
   const openEditTask = (event) => setOpenTask(!openTask)
   const toggleName = (event) => setInputTask(!inputTask)
@@ -18,7 +19,7 @@ export function Task (props) {
     if (event.target.tagName === 'INPUT' && event.target.type === 'text') temp[key].tasks[tkey].taskname = event.target.value
     if (event.target.tagName === 'INPUT' && event.target.type === 'date') temp[key].tasks[tkey].duedate = event.target.value
     if (event.target.tagName === 'INPUT' && event.target.type === 'checkbox') temp[key].tasks[tkey].done = event.target.checked
-    window.fetch('http://localhost:5000/task', {
+    window.fetch('https://todomongoapi.herokuapp.com/task', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(temp[key].tasks[tkey])
@@ -38,7 +39,7 @@ export function Task (props) {
     })
     objToBeDeleted.listid = temp[key].id
     props.handler({ lists: temp })
-    window.fetch('http://localhost:5000/task', {
+    window.fetch('https://todomongoapi.herokuapp.com/task', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(objToBeDeleted)
@@ -58,7 +59,7 @@ export function Task (props) {
           <div className='notes'>
             Notes:
             <br />
-            <textarea rows='10' columns='200' value={props.obj.notes} onChange={saveTask} />
+            <textarea rows='10' columns='200' value={notes} onBlur={saveTask} onChange={e => setNotes(e.target.value)}/>
           </div>
           <div className='priority'>
             Priority:

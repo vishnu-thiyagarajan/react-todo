@@ -17,7 +17,7 @@ export function FilterTask (props) {
     if (element.tagName === 'INPUT' && element.type === 'date') temp[key].tasks[tkey].duedate = element.value
     if (element.tagName === 'INPUT' && element.type === 'checkbox') temp[key].tasks[tkey].done = element.checked
     temp[key].tasks[tkey].listid = Number(listid)
-    window.fetch('http://localhost:5000/task', {
+    window.fetch('https://todomongoapi.herokuapp.com/task', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(temp[key].tasks[tkey])
@@ -38,7 +38,7 @@ export function FilterTask (props) {
     })
     objToBeDeleted.listid = Number(listid)
     props.handler({ lists: temp })
-    window.fetch('http://localhost:5000/task', {
+    window.fetch('https://todomongoapi.herokuapp.com/task', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(objToBeDeleted)

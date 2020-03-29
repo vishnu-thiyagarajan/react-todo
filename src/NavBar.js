@@ -27,7 +27,7 @@ export function NavBar (props) {
         tasks: []
       }
       props.handler({ lists: [...props.lists, data] })
-      window.fetch('http://localhost:5000/list', {
+      window.fetch('https://todomongoapi.herokuapp.com/list', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -53,7 +53,7 @@ export function NavBar (props) {
     })
   }
   const deleteTask = (objToBeDeleted) => {
-    window.fetch('http://localhost:5000/task', {
+    window.fetch('https://todomongoapi.herokuapp.com/task', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(objToBeDeleted)

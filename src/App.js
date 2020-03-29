@@ -1,3 +1,45 @@
+// import React from 'react'
+// import { NaviBar } from './components/NaviBar'
+// import BottomBar from './components/BottomBar'
+// import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+// import ListContainer from './components/ListContainer'
+// import TaskContainer from './components/TaskContainer'
+// import {
+//   BrowserRouter as Router,
+//   Switch,
+//   Route
+// } from 'react-router-dom'
+
+// const theme = createMuiTheme({
+//   palette: {
+//     primary: {
+//       main: '#000'
+//     }
+//   }
+// }
+// )
+// export function App () {
+//   return (
+//     <MuiThemeProvider theme={theme}>
+//       <Router><NaviBar />
+//         <Switch>
+//           <Route path='/today'>
+//             <TaskContainer />
+//             <BottomBar />
+//           </Route>
+//           <Route path='/scheduled'>
+//             <TaskContainer />
+//             <BottomBar />
+//           </Route>
+//           <Route path='/'>
+//             <ListContainer />
+//           </Route>
+//         </Switch>
+//       </Router>
+//     </MuiThemeProvider>
+//   )
+// }
+
 import React, { useState, useEffect } from 'react'
 import './App.css'
 import { NavBar } from './NavBar'
@@ -13,7 +55,7 @@ export function App (props) {
     lists: []
   })
   const fetchData = () => {
-    window.fetch('http://localhost:5000/list')
+    window.fetch('https://todomongoapi.herokuapp.com/list')
       .then(response => response.json()).then(data => {
         data.forEach(element => {
           element.display = true

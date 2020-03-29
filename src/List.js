@@ -19,7 +19,7 @@ export function List (props) {
       const key = temp.findIndex(item => item.id === Number(listid))
       temp[key].listname = event.target.value
       props.handler({ lists: temp })
-      window.fetch('http://localhost:5000/list', {
+      window.fetch('https://todomongoapi.herokuapp.com/list', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: listid, listname: name })
